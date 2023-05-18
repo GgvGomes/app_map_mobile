@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {},
+  "baseUrl": "./",
+    "paths": {
+      "@redux" : ["src/redux"],
+      "@features" :["src/features"],
+      "@data/*": ["src/data/*"],
+      "@components": ["src/components"],
+      "@redux/*" : ["src/redux/*"],
+      "@functions": ["src/functions"],
+      "@responses": ["src/services/rensponses"],
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@styles/*": ["src/styles/*"],
+      "@types": ["src/types/types"],
+      "@modalElements": ["src/components/modal/elements"],
+    },
+  "extends": "expo/tsconfig.base"
+}
