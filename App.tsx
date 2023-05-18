@@ -36,11 +36,7 @@ export default function App() {
   const [regionText, setRegionText] = useState(initialRegion);
   const [markers, setMarkers] = useState(initalMarkers);
 
-  // const [markPosition, setMarkPosition] = useState(0);
-  const mapRef = useRef();
-
-  // useEffect(() => console.log(region), [region]);
-  useEffect(() => console.log(markers), [markers]);
+  const mapRef = useRef(null);
 
   const custom_pin = require('./assets/favicon.png');
 
@@ -62,10 +58,9 @@ export default function App() {
     });
 
     setMarkers(newMarkers);
-    // console.log(newMarkers);
   };
 
-  const handleJump = () => {  
+  const handleJump = () => {
     setRegion({
       latitude: 40.78825,
       longitude: -122.4324,
@@ -74,27 +69,28 @@ export default function App() {
     });
   };
 
-  const handleAnimate = () => {
-    mapRef.current && mapRef?.current?.animateToRegion?.({
-      latitude: 40.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    }, 2000);
-  };
+  const handleAnimate = () =>
+    mapRef.current.animateToRegion(
+      {
+        latitude: 40.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      },
+      2000
+    );
 
   return (
     <View style={styles.container}>
       <MapView
-      ref={mapRef}
+        ref={mapRef}
         region={region}
         accessibilityLiveRegion="polite"
         onRegionChangeComplete={setRegion}
         onRegionChange={setRegionText}
         style={styles.map}
         // onUserLocationChange={}
-
-        >
+      >
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -140,27 +136,36 @@ export default function App() {
       </MapView>
 
       <View style={styles.grid_buttons}>
-        <View
-          style={styles.grid_text}>
+        <View style={styles.grid_text}>
           <Text style={styles.text}>
             {regionText.latitude.toString().substring(0, 8)},{' '}
-            {regionText.longitude.toString().substring(0,10)}
+            {regionText.longitude.toString().substring(0, 10)}
           </Text>
         </View>
 
         <View style={styles.container_buttons}>
-          <Pressable onPress={() => handleJump()} style={({pressed}) => [
-          {
-            backgroundColor: pressed ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.8)',
-          },
-          styles.button]} >
+          <Pressable
+            onPress={() => handleJump()}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed
+                  ? 'rgba(255, 255, 255, 0.7)'
+                  : 'rgba(255, 255, 255, 0.8)',
+              },
+              styles.button,
+            ]}>
             <Text>Jump</Text>
           </Pressable>
-          <Pressable onPress={() => handleAnimate()} style={({pressed}) => [
-          {
-            backgroundColor: pressed ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.8)',
-          },
-          styles.button]}>
+          <Pressable
+            onPress={() => handleAnimate()}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed
+                  ? 'rgba(255, 255, 255, 0.7)'
+                  : 'rgba(255, 255, 255, 0.8)',
+              },
+              styles.button,
+            ]}>
             <Text>Animate</Text>
           </Pressable>
         </View>
@@ -198,7 +203,7 @@ const styles = StyleSheet.create({
     rowGap: 12,
   },
 
-  grid_text:{
+  grid_text: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -218,7 +223,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  container_buttons:{width: 240, flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'},
+  container_buttons: {
+    width: 240,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 
   button: {
     width: '40%',
