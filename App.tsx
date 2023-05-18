@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
 import MapView, { LatLng, LocalTile, Marker, UrlTile } from 'react-native-maps';
 
 const initialRegion = {
@@ -62,7 +62,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <MapView region={region} onRegionChangeComplete={setRegion} style={styles.map}>
+      <MapView
+        initialRegion={region}
+        // onRegionChangeComplete={setRegion}
+        onRegionChange={setRegion}
+        style={styles.map}>
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -107,7 +111,30 @@ export default function App() {
         />
       </MapView>
 
-          {/* <View */}
+      <View style={styles.grid_buttons}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            width: '100%',
+          }}>
+          <Text style={styles.text}>
+            {region.latitude.toString().substring(0, 8)},{' '}
+            {region.longitude.toString().substring(0,10)}
+          </Text>
+        </View>
+
+        <View style={{width: 240, flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'}}>
+          <Pressable style={styles.button}>
+            <Text>Jump</Text>
+          </Pressable>
+          <Pressable style={styles.button}>
+            <Text>Animate</Text>
+          </Pressable>
+        </View>
+      </View>
 
       <StatusBar style="auto" />
     </View>
@@ -119,14 +146,46 @@ const styles = StyleSheet.create({
     flex: 1,
 
     position: 'relative',
+    justifyContent: 'center',
   },
+
   map: {
     width: '100%',
     height: '100%',
   },
 
-  grid_buttons:{
+  grid_buttons: {
     position: 'absolute',
-    bottom: 8,
-  }
+    bottom: 40,
+    height: 'auto',
+
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    width: '100%',
+    rowGap: 12,
+  },
+
+  text: {
+    textAlign: 'center',
+
+    padding: 16,
+    width: 240,
+    backgroundColor: 'rgba(255, 255, 255, 0.712)',
+    borderRadius: 30,
+
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
+  button: {
+    width: '40%',
+    backgroundColor: 'rgba(255, 255, 255, 0.712)',
+    borderRadius: 24,
+    padding: 16,
+
+    alignItems: 'center',
+  },
 });
