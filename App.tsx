@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { LegacyRef, useEffect, useRef, useState } from 'react';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MapView, { LatLng, LocalTile, Marker, UrlTile } from 'react-native-maps';
 
 const initialRegion = {
@@ -69,6 +69,9 @@ export default function App() {
     });
   };
 
+  // Um jeito que UBER entre outros devem fazer: 
+  // Buscam a localização do motorista e do usuario colocam no mapa o icone e ficam atualizando a localização
+  // É um algoritmo meio "complicado" mas é bem pensavel
   const handleAnimate = () =>
     mapRef.current.animateToRegion(
       {
