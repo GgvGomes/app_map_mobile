@@ -113,24 +113,26 @@ export default function App() {
 
       <View style={styles.grid_buttons}>
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            width: '100%',
-          }}>
+          style={styles.grid_text}>
           <Text style={styles.text}>
             {region.latitude.toString().substring(0, 8)},{' '}
             {region.longitude.toString().substring(0,10)}
           </Text>
         </View>
 
-        <View style={{width: 240, flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'}}>
-          <Pressable style={styles.button}>
+        <View style={styles.container_buttons}>
+          <Pressable style={({pressed}) => [
+          {
+            backgroundColor: pressed ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.8)',
+          },
+          styles.button]} >
             <Text>Jump</Text>
           </Pressable>
-          <Pressable style={styles.button}>
+          <Pressable style={({pressed}) => [
+          {
+            backgroundColor: pressed ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.8)',
+          },
+          styles.button]}>
             <Text>Animate</Text>
           </Pressable>
         </View>
@@ -168,6 +170,14 @@ const styles = StyleSheet.create({
     rowGap: 12,
   },
 
+  grid_text:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
+
   text: {
     textAlign: 'center',
 
@@ -180,9 +190,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
+  container_buttons:{width: 240, flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'},
+
   button: {
     width: '40%',
-    backgroundColor: 'rgba(255, 255, 255, 0.712)',
     borderRadius: 24,
     padding: 16,
 
