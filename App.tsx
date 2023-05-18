@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import React, { LegacyRef, useEffect, useRef, useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
 import MapView, { LatLng, LocalTile, Marker, UrlTile } from 'react-native-maps';
 
@@ -33,7 +33,12 @@ const initalMarkers = [
 
 export default function App() {
   const [region, setRegion] = useState(initialRegion);
+  const [regionText, setRegionText] = useState(initialRegion);
   const [markers, setMarkers] = useState(initalMarkers);
+
+  // const [markPosition, setMarkPosition] = useState(0);
+  const mapRef = useRef();
+
   // useEffect(() => console.log(region), [region]);
   useEffect(() => console.log(markers), [markers]);
 
@@ -57,16 +62,39 @@ export default function App() {
     });
 
     setMarkers(newMarkers);
-    console.log(newMarkers);
+    // console.log(newMarkers);
+  };
+
+  const handleJump = () => {  
+    setRegion({
+      latitude: 40.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+  };
+
+  const handleAnimate = () => {
+    mapRef.current && mapRef?.current?.animateToRegion?.({
+      latitude: 40.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }, 2000);
   };
 
   return (
     <View style={styles.container}>
       <MapView
-        initialRegion={region}
-        // onRegionChangeComplete={setRegion}
-        onRegionChange={setRegion}
-        style={styles.map}>
+      ref={mapRef}
+        region={region}
+        accessibilityLiveRegion="polite"
+        onRegionChangeComplete={setRegion}
+        onRegionChange={setRegionText}
+        style={styles.map}
+        // onUserLocationChange={}
+
+        >
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -115,20 +143,20 @@ export default function App() {
         <View
           style={styles.grid_text}>
           <Text style={styles.text}>
-            {region.latitude.toString().substring(0, 8)},{' '}
-            {region.longitude.toString().substring(0,10)}
+            {regionText.latitude.toString().substring(0, 8)},{' '}
+            {regionText.longitude.toString().substring(0,10)}
           </Text>
         </View>
 
         <View style={styles.container_buttons}>
-          <Pressable style={({pressed}) => [
+          <Pressable onPress={() => handleJump()} style={({pressed}) => [
           {
             backgroundColor: pressed ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.8)',
           },
           styles.button]} >
             <Text>Jump</Text>
           </Pressable>
-          <Pressable style={({pressed}) => [
+          <Pressable onPress={() => handleAnimate()} style={({pressed}) => [
           {
             backgroundColor: pressed ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.8)',
           },
