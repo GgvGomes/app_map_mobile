@@ -1,6 +1,9 @@
 # Map Mobile
 
 Create a repository to make a map. Testing skills!
+<p align="center">
+	<img src="https://github.com/GgvGomes/app_map_mobile/assets/80273727/e15160ec-92eb-4a39-a3b8-09cb9a6da56c" />
+</p>
 
 # Why?
 
